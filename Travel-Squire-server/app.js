@@ -1,16 +1,12 @@
 const express = require("express");
-
 //HTTP request logger middleware for nodejs
 const logger = require("morgan");
-
 const cors = require("cors");
-
 //creates a new express instance
 const app = express();
-
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-
+const userRouter = require("./routes/user/userRouter");
+const ErrorMessageHandlerClass = require("./routes/utils/ErrorMessageHandlerClass");
+const errorController = require("./routes/utils/errorController");
 app.use(cors());
 
 //if app is in dev, app.use is use to bind the middleware to the application
@@ -24,7 +20,17 @@ app.use(express.json());
 //this is a inbuilt method in express to recognize the incoming request object as a Json Object
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/api/user", userRouter);
+
+app.all("*", function (req, res, next) {
+  next(
+    ErrorMessageHandlerClass(
+      `Cannot find ${req.originalUrl} on this server! Check your URL`,
+      404
+    )
+  );
+});
+
+app.use(errorController);
 
 module.exports = app;

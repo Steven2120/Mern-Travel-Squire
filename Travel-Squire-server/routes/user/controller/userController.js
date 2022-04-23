@@ -82,6 +82,7 @@ async function updateUser(req, res, next) {
   }
 
   try {
+    let updateUser = await User.findOneAndUpdate({});
   } catch (e) {
     console.log(e);
   }
