@@ -82,10 +82,20 @@ async function updateUser(req, res, next) {
   }
 
   try {
-    let updateUser = await User.findOneAndUpdate({});
+    let updatedUser = await User.findOneAndUpdate(
+      { email: res.locals.decodedJwt.email },
+      req.body,
+      { new: true }
+    );
+
+    if (req.body.password) {
+      res.status(200).json({ message: "Success", payload: updatedUser });
+    } else {
+      res.json({ message: "Success", payload: updatedUser });
+    }
   } catch (e) {
-    console.log(e);
+    next(e);
   }
 }
 
-module.exports = { createUser, getUser };
+module.exports = { createUser, getUser, updateUser };
