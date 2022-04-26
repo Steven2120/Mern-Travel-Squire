@@ -63,7 +63,7 @@ async function login(req, res) {
             email: foundUser.email,
             username: foundUser.username,
           },
-          process.env.PRIVATE_JWT_TOKEN,
+          process.env.PRIVATE_JWT_KEY,
           { expiresIn: "24h" }
         );
         res.json({ message: "Success", payload: jwtToken });
@@ -105,7 +105,7 @@ async function getUserInfo(req, res, next) {
   try {
     let userInfo = await User.findOne({
       email: res.locals.decodedJwt.email,
-    }).select("-password -__v");
+    }).select("-password -__v -_id");
 
     res.json({ message: "Success", payload: userInfo });
   } catch (e) {
