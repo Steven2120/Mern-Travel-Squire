@@ -2,6 +2,7 @@ const express = require("express");
 //HTTP request logger middleware for nodejs
 const logger = require("morgan");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 //creates a new express instance
 const app = express();
 const userRouter = require("./routes/user/userRouter");
@@ -13,6 +14,15 @@ app.use(cors());
 if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));
 }
+
+const limiter = rateLimit({
+  max: 20,
+  windowMs: 1 * 60 * 1000,
+  message:
+    "Too many requests from this IP, please try again or contact support",
+});
+
+app.use("/api", limiter);
 
 //required for Post and Put requests since you are sending data in the form of a data object, to the server and you are asking the server to accept or store data which is enclosed it the req.body
 app.use(express.json());

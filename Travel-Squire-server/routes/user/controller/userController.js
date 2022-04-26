@@ -27,11 +27,12 @@ async function createUser(req, res, next) {
 
     res.json({ message: "Success", data: savedUser });
   } catch (e) {
-    console.log(e);
+    console.log("1");
+    next(e);
   }
 }
 
-async function getUser(req, res) {
+async function login(req, res) {
   const { email, password } = req.body;
 
   const { errorObj } = res.locals;
@@ -83,13 +84,15 @@ async function updateUser(req, res, next) {
 
   try {
     let updatedUser = await User.findOneAndUpdate(
-      { email: res.locals.decodedJwt.email },
+      {
+        email: res.locals.decodedJwt.email,
+      },
       req.body,
       { new: true }
     );
 
     if (req.body.password) {
-      res.status(200).json({ message: "Success", payload: updatedUser });
+      res.status(202).json({ message: "Success", payload: updatedUser });
     } else {
       res.json({ message: "Success", payload: updatedUser });
     }
@@ -98,4 +101,16 @@ async function updateUser(req, res, next) {
   }
 }
 
-module.exports = { createUser, getUser, updateUser };
+async function getUserInfo(req, res, next) {
+  try {
+    let userInfo = await User.findOne({
+      email: res.locals.decodedJwt.email,
+    }).select("-password -__v");
+
+    res.json({ message: "Success", payload: userInfo });
+  } catch (e) {
+    next(e);
+  }
+}
+
+module.exports = { createUser, login, updateUser, getUserInfo };
