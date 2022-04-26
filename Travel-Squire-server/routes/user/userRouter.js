@@ -21,7 +21,6 @@ const {
   checkIsAlphaFunc,
   checkIsAlphanumericFunc,
 } = require("./helpers/authMiddleware");
-const app = require("../../app");
 
 router.post(
   "/sign-up",
