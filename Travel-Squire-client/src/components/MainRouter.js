@@ -6,8 +6,8 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Signup from "./Signup/Signup";
-import Login from "./Login/Login";
+import Signup from "./Signup/RegisterScreen";
+import Login from "./Login/LoginScreen";
 
 const MainRouter = () => {
   return (
