@@ -23,7 +23,7 @@ const {
 } = require("./helpers/authMiddleware");
 
 router.post(
-  "/sign-up",
+  "/register",
   checkIsUndefinedFunc,
   checkIsStrongPasswordFunc,
   checkIsAlphanumericFunc,

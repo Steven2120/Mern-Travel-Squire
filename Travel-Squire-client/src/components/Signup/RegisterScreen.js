@@ -11,9 +11,46 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
+  const registerHandler = async (e) => {
+    const config = {
+      header: {
+        "Content-type": "application/json",
+      },
+    };
+
+    if (password !== confirmPassword) {
+      setPassword("");
+      setConfirmPassword("");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+
+      setError("Passwords do not match");
+    }
+
+    try {
+      const { data } = await axios.post(
+        "/api/user/register",
+        { firstName, lastName, username, email, password },
+        config
+      );
+
+      localStorage.setItem("authToken", data.token);
+
+      navigate("/login");
+    } catch (error) {
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
+
   return (
     <div className="register__container">
-      <form className="register__form">
+      <form className="register__form" onSubmit={registerHandler}>
         <h3 className="register__title">Register</h3>
 
         <div className="form__group">
