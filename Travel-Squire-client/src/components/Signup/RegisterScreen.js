@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -12,6 +12,12 @@ const RegisterScreen = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const registerHandler = async (e) => {
     const config = {
@@ -52,7 +58,7 @@ const RegisterScreen = () => {
     <div className="register__container">
       <form className="register__form" onSubmit={registerHandler}>
         <h3 className="register__title">Register</h3>
-
+        {error && <span className="error__message">{error}</span>}
         <div className="form__group">
           <label htmlFor="firstname" className="register__label">
             First name:

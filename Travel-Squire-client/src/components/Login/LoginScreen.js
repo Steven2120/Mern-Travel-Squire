@@ -2,17 +2,46 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginScreen.css";
-import { set } from "mongoose";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      header: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        "/api/user/login",
+        { email, password },
+        config
+      );
+
+      localStorage.setItem("authToken", data.token);
+
+      navigate("/");
+    } catch (error) {
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+
+      setError(error.response.data.error);
+    }
+  };
 
   return (
     <div className="login__container">
-      <form className="login__form">
+      <form className="login__form" onSubmit={loginHandler}>
         <h3 className="login__title">Login</h3>
-
+        {error && <span className="error__message">{error}</span>}
         <div className="form__group">
           <label htmlFor="email" className="login__label">
             Email:
@@ -38,7 +67,7 @@ const Login = () => {
             id="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div className="login__btn__div">

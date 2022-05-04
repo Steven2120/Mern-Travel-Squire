@@ -8,6 +8,7 @@ import {
 
 import Signup from "./Signup/RegisterScreen";
 import Login from "./Login/LoginScreen";
+import HomeScreen from "./HomeScreen/HomeScreen";
 
 const MainRouter = () => {
   return (
@@ -16,6 +17,7 @@ const MainRouter = () => {
         <Routes>
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<HomeScreen />} />
         </Routes>
       </Router>
     </>
