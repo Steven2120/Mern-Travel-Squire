@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import Axios from "../Utils/Axios";
 import "./LoginScreen.css";
 
-const Login = () => {
+const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,7 +19,7 @@ const Login = () => {
     };
 
     try {
-      const { data } = await axios.post(
+      const { data } = await Axios.post(
         "/api/user/login",
         { email, password },
         config
@@ -29,11 +29,11 @@ const Login = () => {
 
       navigate("/");
     } catch (error) {
+      setError(error.response.data.error);
+
       setTimeout(() => {
         setError("");
       }, 5000);
-
-      setError(error.response.data.error);
     }
   };
 
@@ -71,7 +71,9 @@ const Login = () => {
           />
 
           <div className="login__btn__div">
-            <button className="login__btn">Login</button>
+            <button type="submit" className="login__btn">
+              Login
+            </button>
           </div>
         </div>
 
@@ -86,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginScreen;
