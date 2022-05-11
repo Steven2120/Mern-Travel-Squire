@@ -8,8 +8,6 @@ const {
   getUserInfo,
 } = require("./controller/userController");
 
-const jwtMiddleware = require("../utils/jwtMiddleware");
-
 const checkIsUndefinedFunc = require("./helpers/checkIsUndefinedFunc");
 
 const checkIsStrongPasswordFunc = require("./helpers/checkIsStrongPasswordFunc");
@@ -41,8 +39,8 @@ router.post(
   login
 );
 
-router.put("/update-user-profile", jwtMiddleware, updateUser);
+router.put("/update-user-profile", updateUser);
 
-router.get("/get-user-info", jwtMiddleware, getUserInfo);
+router.get("/get-user-info", getUserInfo);
 
 module.exports = router;

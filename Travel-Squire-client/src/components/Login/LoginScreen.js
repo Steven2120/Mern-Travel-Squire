@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from "../Utils/Axios";
+import axios from "axios";
 import "./LoginScreen.css";
 
 const LoginScreen = () => {
@@ -19,7 +19,7 @@ const LoginScreen = () => {
     };
 
     try {
-      const { data } = await Axios.post(
+      const { data } = await axios.post(
         "/api/user/login",
         { email, password },
         config
