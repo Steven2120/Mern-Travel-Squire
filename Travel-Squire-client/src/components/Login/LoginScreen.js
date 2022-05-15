@@ -20,12 +20,12 @@ const LoginScreen = () => {
 
     try {
       const { data } = await axios.post(
-        "/api/user/login",
+        "http://localhost:3001/api/user/login",
         { email, password },
         config
       );
 
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data.payload);
 
       navigate("/");
     } catch (error) {

@@ -6,6 +6,7 @@ const rateLimit = require("express-rate-limit");
 //creates a new express instance
 const app = express();
 const userRouter = require("./routes/user/userRouter");
+const privateRoute = require("./routes/user/privateRoute");
 const ErrorMessageHandlerClass = require("./routes/utils/ErrorMessageHandlerClass");
 const errorController = require("./routes/utils/errorController");
 app.use(cors());
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/user", userRouter);
+app.use("/api/private", privateRoute);
 
 app.all("*", function (req, res, next) {
   next(
